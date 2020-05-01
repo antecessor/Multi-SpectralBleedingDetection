@@ -15,10 +15,8 @@ from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.utils import class_weight, shuffle, resample
 from stability_selection import StabilitySelection, plot_stability_path
-from xgboost import XGBClassifier
-from imblearn import pipeline as pl
 
-from lastDataCOde.DataAnalysis import DataAnalysisUtils
+
 
 train_original = pd.read_csv("DataUsed/method23_real2.csv")
 test_original = pd.read_csv("DataUsed/method23_real2_valid.csv")
@@ -85,7 +83,6 @@ for train_index, test_index in kf.split(class1Target):
 for train_index, test_index in kf.split(class2Target):
     targetTrainIndexC2.append(train_index)
     targetTestIndexC2.append(test_index)
-dA = DataAnalysisUtils()
 
 
 def spScore(y_true, y_pred):
@@ -110,8 +107,7 @@ for index in range(len(targetTestIndexC2)):
         X_train, X_test, y_train, y_test = train_test_split(X, CMS, test_size=0.05, stratify=CMS)
 
         # smt = SMOTETomek()
-        rus = RandomUnderSampler()
-        ros = RandomOverSampler()
+
         # tree_param = {'bootstrap': [True, False],
         #               'max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, None],
         #               'max_features': ['auto', 'sqrt'],
@@ -138,9 +134,9 @@ for index in range(len(targetTestIndexC2)):
         # y_ = np.round(df_[:, -1])
         # df = df.select_dtypes(include=['float32', 'float64', 'int'])
         # X_ = df_[:, 0:df_.shape[1] - 1:1]
-        X_, y_ = ros.fit_sample(X_train, y_train)
-        X_, y_ = rus.fit_sample(X_, y_)
-        # X_, y_ = X_train, y_train
+        # X_, y_ = ros.fit_sample(X_train, y_train)
+        # X_, y_ = rus.fit_sample(X_, y_)
+        X_, y_ = X_train, y_train
         # X_, y_ = smt.fit_resample(X_train, y_train)
         # X_, y_ = resample(X_, y_,stratify=y_,n_samples=1000)
         # weights = np.zeros([1, len(y_)])
